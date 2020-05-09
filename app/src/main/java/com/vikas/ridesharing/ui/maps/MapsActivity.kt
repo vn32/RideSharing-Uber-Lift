@@ -77,6 +77,8 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                             enableMyLocationOnMap()
                             moveCamera(currentLatLng)
                             animateCamera(currentLatLng)
+                            //call nearbycabs here,Think!!!!!
+                            presenter.requestNearByCabs(currentLatLng!!)
                         }
 
                     }
@@ -143,5 +145,9 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
     override fun onDestroy() {
         presenter.onDetach()//to disconect from networkservice before app destroy
         super.onDestroy()
+    }
+
+    override fun showNearByCabs(latLngList: List<LatLng>) {
+
     }
 }
