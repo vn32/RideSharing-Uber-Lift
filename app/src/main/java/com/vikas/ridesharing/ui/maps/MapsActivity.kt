@@ -2,6 +2,7 @@ package com.vikas.ridesharing.ui.maps
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Transformations.map
@@ -71,6 +72,8 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                         if(currentLatLng==null){
                             currentLatLng= LatLng(location.latitude,location.longitude)
                             enableMyLocation()
+                            moveCamera(currentLatLng)
+                            animateCamera(currentLatLng)
                         }
 
                     }
@@ -79,10 +82,13 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
             }
             
         }
+        //binding locationcall with fusedlocationprovederclient
+        fusedLocationProviderClient?.requestLocationUpdates(locationRequest,locationCallback,
+            Looper.myLooper())
     }
 
-    override fun onMapReady(gooGleMap: GoogleMap) {
-        googleMap = gooGleMap
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
     }
     //to check whether permission is given or not for location
     override fun onStart() {
@@ -92,6 +98,7 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                 when {
                     PermissionUtils.isLocationEnabled(this) -> {
                         //fetch the location
+                        setUpLocationListener()
                     } else -> {
                         PermissionUtils.showGPSNotEnabledDialog(this)
                     }
@@ -116,6 +123,7 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                     when {
                         PermissionUtils.isLocationEnabled(this) -> {
                             //fetch the location
+                            setUpLocationListener()
                         } else -> {
                         PermissionUtils.showGPSNotEnabledDialog(this)
                     }
