@@ -14,10 +14,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.*
 import com.vikas.ridesharing.R
 import com.vikas.ridesharing.data.network.NetworkService
+import com.vikas.ridesharing.utils.MapUtils
 import com.vikas.ridesharing.utils.PermissionUtils
 import com.vikas.ridesharing.utils.ViewUtils
 
@@ -26,6 +26,8 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         private const val TAG="MapsActivity"
         private const val LOCATION_PERMISSION_REQUEST_CODE=999
     }
+    //for showing cabs on view
+    private val nearByCabsMarkerList= arrayListOf<Marker>()
     //variable for location access
     private var fusedLocationProviderClient:FusedLocationProviderClient?=null
     private lateinit var locationCallback: LocationCallback   //variable for location access
@@ -56,6 +58,14 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
     }
+    //creating marker for locations of cabs in view
+    private fun addCarMarkerAndGet(latLng: LatLng):Marker{
+        //created images of cabs
+        val bitmapDescriptor=BitmapDescriptorFactory.fromBitmap(MapUtils.getCarBitMap(this))
+        //setting this images to cabs location in view
+        return googleMap.addMarker(MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor))
+    }
+
     //to show myself on location area
     fun enableMyLocationOnMap(){
         googleMap.setPadding(0,ViewUtils.dpToPx(48f),0,0)
@@ -148,6 +158,13 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
     }
 
     override fun showNearByCabs(latLngList: List<LatLng>) {
+        nearByCabsMarkerList.clear()//to erase the cache data
+        for(latLng in latLngList){
+            val nearByCabMarker=addCarMarkerAndGet(latLng)//created a marker for this location
+            nearByCabsMarkerList.add(nearByCabMarker)//adding the marker int array
+
+
+        }
 
     }
 }
