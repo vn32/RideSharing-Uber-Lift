@@ -56,8 +56,11 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
     }
-    fun enableMyLocation(){
-        //discuss later
+    //to show myself on location area
+    fun enableMyLocationOnMap(){
+        googleMap.setPadding(0,ViewUtils.dpToPx(48f),0,0)
+        googleMap.isMyLocationEnabled=true
+
     }
     //to access the the current location
     fun setUpLocationListener(){
@@ -71,7 +74,7 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                     for(location in locationResult.locations){
                         if(currentLatLng==null){
                             currentLatLng= LatLng(location.latitude,location.longitude)
-                            enableMyLocation()
+                            enableMyLocationOnMap()
                             moveCamera(currentLatLng)
                             animateCamera(currentLatLng)
                         }
