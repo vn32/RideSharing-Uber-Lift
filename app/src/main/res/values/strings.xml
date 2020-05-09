@@ -2,5 +2,6 @@
     <string name="app_name">RideSharing</string>
     <string name="where_to">Where to?</string>
     <string name="pickup_location">Pickup Location</string>
+    <string name="current_location">Current Location</string>
 <!--    <string name="google_maps_key" />-->
 </resources>
