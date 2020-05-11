@@ -53,6 +53,18 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
             Constants.CAB_BOOKED ->{
                 view?.informCabBooked()
             }
+            Constants.PICKUP_PATH -> {
+                val jsonArray=jsonObject.getJSONArray("path")//taking all location send by server
+                val pickUpPath= arrayListOf<LatLng>()
+                for(i in 0 until  jsonArray.length()){
+                    val lat=(jsonArray.get(i) as JSONObject).getDouble(Constants.LAT)
+                    val lng=(jsonArray.get(i) as JSONObject).getDouble(Constants.LNG)
+                    val latLng=LatLng(lat,lng)
+                   pickUpPath.add(latLng)
+                }
+
+
+            }
         }
 
     }

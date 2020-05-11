@@ -254,6 +254,15 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
     }
 
     override fun informCabBooked() {
+        nearByCabsMarkerList.forEach{
+            it.remove()//removing all marker of cab on map
+        }
+        nearByCabsMarkerList.clear()//clearing so that no buffer will left
+        requestCabButton.visibility=View.GONE
+        statusTextView.text=getString(R.string.your_cab_is_booked)
+    }
+
+    override fun showPath(latLngList: List<LatLng>) {
 
     }
 }
