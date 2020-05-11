@@ -70,4 +70,15 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
         jsonObject.put(Constants.LNG,latLng.longitude)
         webSocket.sendMessage(jsonObject.toString())
     }
+    //requesting a cab from server
+    fun requestCab(pickUpLatLng: LatLng,dropLatLng: LatLng){
+        val jsonObject=JSONObject() //creating object to send message to server
+        jsonObject.put(Constants.TYPE,Constants.REQUEST_CABS)
+        jsonObject.put("pickUpLat",pickUpLatLng.latitude)
+        jsonObject.put("pickUpLng",pickUpLatLng.longitude)
+        jsonObject.put("dropLat",dropLatLng.latitude)
+        jsonObject.put("dropLng",dropLatLng.longitude)
+        webSocket.sendMessage(jsonObject.toString())//sending message to server in string type
+
+    }
 }
