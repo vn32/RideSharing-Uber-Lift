@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_marginStart="12dp"
-        android:id="@+id/whiteContainer"
+        android:id="@+id/pickUpDropLayout"
         android:layout_marginEnd="12dp"
         android:layout_marginTop="108dp"
         android:background="@android:color/white"
@@ -113,6 +113,50 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:id="@+id/statusTextView"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/black"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text="@string/requesting_your_cab"
+        android:padding="12dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pickUpDropLayout"
+
+        android:layout_marginEnd="12dp"
+
+        android:layout_height="wrap_content">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+    
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:id="@+id/requestCabButton"
+        android:layout_margin="16dp"
+        android:padding="12dp"
+        android:gravity="bottom"
+        android:background="@android:color/black"
+        android:text="@string/request_cab"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlCompat">
+
+    </androidx.appcompat.widget.AppCompatButton>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

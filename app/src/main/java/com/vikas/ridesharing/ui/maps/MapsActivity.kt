@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Transformations.map
@@ -68,6 +69,14 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         }
        dropTextView.setOnClickListener{
         launchLocationAutoCompleteActivity(DROP_REQUEST_CODE)
+        }
+        requestCabButton.setOnClickListener{//click listener for requesting a cab
+            statusTextView.visibility=View.VISIBLE
+            statusTextView.text=getString(R.string.requesting_your_cab)
+            requestCabButton.isEnabled=false
+            pickUpTextView.isEnabled=false
+            dropTextView.isEnabled=false
+            presenter.requestCab(pickUpLatLng!!,dropLatLng!!)
         }
     }
     //Think???
@@ -138,6 +147,13 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         fusedLocationProviderClient?.requestLocationUpdates(locationRequest,locationCallback,
             Looper.myLooper())
     }
+    //for requesting a cab button visible to user
+    private fun checkAndShowRequestButton(){
+         if(pickUpLatLng!=null && dropLatLng!=null){
+             requestCabButton.visibility=View.VISIBLE//setting visibility of button
+             requestCabButton.isEnabled=true
+         }
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
@@ -199,10 +215,12 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                         PICKUP_REQUEST_CODE -> {
                             pickUpTextView.text=place.name
                             pickUpLatLng=place.latLng//storing picup loaction inside the variable
+                            checkAndShowRequestButton()
                         }
                         DROP_REQUEST_CODE -> {
                             dropTextView.text=place.name
                             dropLatLng=place.latLng//storing drop location inside the varibale
+                            checkAndShowRequestButton()
                         }
 
                     }
@@ -232,6 +250,10 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
 
         }
+
+    }
+
+    override fun informCabBooked() {
 
     }
 }

@@ -49,6 +49,10 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
                 //for storing the all locations of cabs nearby me
                 handleOnMessageNearByCabs(jsonObject)
             }
+            //for checking wheteher cab is booked or not
+            Constants.CAB_BOOKED ->{
+                view?.informCabBooked()
+            }
         }
 
     }
