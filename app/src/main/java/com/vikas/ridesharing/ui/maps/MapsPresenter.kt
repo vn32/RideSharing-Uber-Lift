@@ -49,8 +49,8 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
                 //for storing the all locations of cabs nearby me
                 handleOnMessageNearByCabs(jsonObject)
             }
-            //for checking wheteher cab is booked or not
             Constants.CAB_BOOKED ->{
+                Log.d(TAG,Constants.CAB_BOOKED)
                 view?.informCabBooked()
             }
             Constants.PICKUP_PATH -> {
@@ -62,6 +62,7 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
                     val latLng=LatLng(lat,lng)
                    pickUpPath.add(latLng)
                 }
+                view?.showPath(pickUpPath)
 
 
             }
@@ -88,13 +89,16 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
     }
     //requesting a cab from server
     fun requestCab(pickUpLatLng: LatLng,dropLatLng: LatLng){
-        val jsonObject=JSONObject() //creating object to send message to server
-        jsonObject.put(Constants.TYPE,Constants.REQUEST_CABS)
-        jsonObject.put("pickUpLat",pickUpLatLng.latitude)
-        jsonObject.put("pickUpLng",pickUpLatLng.longitude)
-        jsonObject.put("dropLat",dropLatLng.latitude)
-        jsonObject.put("dropLng",dropLatLng.longitude)
-        webSocket.sendMessage(jsonObject.toString())//sending message to server in string type
+        Log.d(TAG,Constants.REQUEST_CAB)
+        val jsonObject = JSONObject().apply {
+            put(Constants.TYPE, Constants.REQUEST_CAB)
+            put("pickUpLat",pickUpLatLng.latitude)
+            put("pickUpLng", pickUpLatLng.longitude)
+            put("dropLat", dropLatLng.latitude)
+            put("dropLng", dropLatLng.longitude)
+        }
+        webSocket.sendMessage(jsonObject.toString())
+      //sending message to server in string type
 
     }
 }
