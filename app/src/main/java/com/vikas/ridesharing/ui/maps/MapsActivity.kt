@@ -333,6 +333,10 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                         multiplier*currentLatLngFromServer!!.longitude+(1-multiplier)*previousLatLngFromServer!!.longitude
                     )
                     movingCabMarker?.position=nextLocation
+                    val rotation=MapUtils.getRotation(previousLatLngFromServer!!,nextLocation)
+                    if(!rotation.isNaN()){
+                        movingCabMarker?.rotation=rotation
+                    }
                     movingCabMarker?.setAnchor(0.5f,0.5f)
                     animateCamera(nextLocation)
                 }
@@ -340,10 +344,20 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
             }
             valueAnimator.start()
-
-
-
         }
+    }
+
+    override fun informCabIsArriving() {
+        statusTextView.text=getString(R.string.your_cab_is_arriving)
+    }
+
+    override fun informCabArrived() {
+        statusTextView.text=getString(R.string.your_cab_has_arrived)
+        greyPolyLine?.remove()
+        blackPolyLine?.remove()
+        originMarker?.remove()
+        destinationMarker?.remove()
 
     }
 }
+

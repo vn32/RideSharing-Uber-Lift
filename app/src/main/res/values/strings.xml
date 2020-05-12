@@ -7,5 +7,7 @@
     <string name="request_cab">Request Cab</string>
     <string name="your_cab_is_booked">Your cab is booked</string>
     <string name="status_cab_booked">Cab Booked</string>
+    <string name="your_cab_is_arriving">Your cab is arriving</string>
+    <string name="your_cab_has_arrived">Your cab has arrived</string>
     <!--    <string name="google_maps_key" />-->
 </resources>

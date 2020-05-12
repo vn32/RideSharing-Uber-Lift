@@ -72,6 +72,12 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
                 //notify the view
                 view?.updateCabLocation(LatLng(latCurrent,lngCurrent))
             }
+            Constants.CAB_IS_ARRIVING ->{
+                view?.informCabIsArriving()
+            }
+            Constants.CAB_ARRIVED ->{
+                view?.informCabArrived()
+            }
         }
 
     }
