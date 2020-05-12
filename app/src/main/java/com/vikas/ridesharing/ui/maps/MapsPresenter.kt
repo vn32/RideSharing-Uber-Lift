@@ -79,9 +79,11 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
                 view?.informCabArrived()
             }
             Constants.TRIP_START ->{
+                view?.informTripStart()
 
             }
             Constants.TRIP_END ->{
+                view?.informTripEnd()
 
             }
         }
@@ -95,6 +97,17 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
 
     override fun onError(error: String) {
         Log.d(TAG,"onError error:$error")
+        val jsonObject=JSONObject(error)
+        when(jsonObject.getString(Constants.TYPE)){
+            Constants.ROUTES_NOT_AVAILABLE ->{
+                view?.showRoutesNotAvailableError()
+
+            }
+            Constants.DIRECTION_API_FAILED ->{
+                view?.showDirectionApiFailedError("Direction API Failed"+jsonObject.getString(Constants.ERROR))
+
+            }
+        }
     }
     //sending request to server of type nearbycabs with my current location to find all cabs near to me
     fun requestNearByCabs(latLng: LatLng)

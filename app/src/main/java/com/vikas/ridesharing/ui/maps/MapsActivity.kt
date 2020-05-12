@@ -88,7 +88,11 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
             dropTextView.isEnabled=false
             presenter.requestCab(pickUpLatLng!!,dropLatLng!!)
         }
+        nextRideButton.setOnClickListener{
+            reset()
+        }
     }
+
     //Think???
     private fun launchLocationAutoCompleteActivity(requestCode: Int){
         val fields:List<Place.Field> = listOf(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG)
@@ -168,6 +172,40 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
              requestCabButton.visibility=View.VISIBLE//setting visibility of button
              requestCabButton.isEnabled=true
          }
+    }
+    //button for next ride
+    private fun reset() {
+        statusTextView.visibility = View.GONE
+        nextRideButton.visibility = View.GONE
+        nearByCabsMarkerList.forEach {
+            it.remove()
+        }
+        nearByCabsMarkerList.clear()
+        currentLatLngFromServer = null
+        previousLatLngFromServer = null
+        if (currentLatLng != null) {
+            moveCamera(currentLatLng)
+            animateCamera(currentLatLng)
+            setCurrentLocationAsPick()
+            presenter.requestNearByCabs(currentLatLng!!)
+        } else {
+            pickUpTextView.text = ""
+        }
+        pickUpTextView.isEnabled = true
+        dropTextView.isEnabled = true
+        dropTextView.text = ""
+        movingCabMarker?.remove()
+        greyPolyLine?.remove()
+        blackPolyLine?.remove()
+        originMarker?.remove()
+        destinationMarker?.remove()
+        dropLatLng = null
+        greyPolyLine = null
+        blackPolyLine = null
+        originMarker = null
+        destinationMarker = null
+        movingCabMarker = null
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -254,6 +292,7 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
     override fun onDestroy() {
         presenter.onDetach()//to disconect from networkservice before app destroy
+        fusedLocationProviderClient?.removeLocationUpdates(locationCallback)//
         super.onDestroy()
     }
 
@@ -367,11 +406,25 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
     override fun informTripEnd() {
         statusTextView.text=getString(R.string.trip_end)
+        nextRideButton.visibility=View.VISIBLE//showing button next ride
         greyPolyLine?.remove()
         blackPolyLine?.remove()
         originMarker?.remove()
         destinationMarker?.remove()
 
     }
+    //resetiing everything when any error occur
+    override fun showRoutesNotAvailableError() {
+        val error=getString(R.string.routes_not_available_choose_different_locations)
+        Toast.makeText(this,error,Toast.LENGTH_LONG).show()
+        reset()
+
+    }
+
+    override fun showDirectionApiFailedError(error: String) {
+        Toast.makeText(this,error,Toast.LENGTH_LONG).show()
+        reset()
+    }
+
 }
 
