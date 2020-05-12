@@ -66,6 +66,12 @@ class MapsPresenter (private val networkService:NetworkService):WebSocketListene
 
 
             }
+            Constants.LOCATION -> {
+                val latCurrent=jsonObject.getDouble("lat")
+                val lngCurrent=jsonObject.getDouble("lng")
+                //notify the view
+                view?.updateCabLocation(LatLng(latCurrent,lngCurrent))
+            }
         }
 
     }

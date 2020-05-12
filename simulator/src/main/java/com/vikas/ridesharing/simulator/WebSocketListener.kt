@@ -10,4 +10,5 @@ interface WebSocketListener {
 
     fun onError(error: String)
 
+
 }
